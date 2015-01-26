@@ -11,4 +11,7 @@ group :test do
   gem 'coveralls', require: false
 end
 
-gem 'jruby-openssl', platform: :jruby
+if RUBY_ENGINE == 'jruby'
+  gem 'slop', '~> 3.6.0' # https://github.com/leejarvis/slop/issues/160
+  gem 'jruby-openssl', platform: :jruby
+end

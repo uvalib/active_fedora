@@ -12,6 +12,8 @@ matrix:
   include:
     - rvm: 2.1
       gemfile: gemfiles/rails4.2.gemfile
+    - rvm: jruby
+      gemfile: gemfiles/rails4.2.gemfile
 
 notifications:
   irc: "irc.freenode.org#projecthydra"
