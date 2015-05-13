@@ -30,9 +30,20 @@ describe "Indirect containers" do
       file1 = foo.related_objects.build
       file2 = foo.related_objects.build
       foo.save
+      require 'byebug'; byebug
       expect(foo.related_objects.each.count).to eq(2)
       foo.related_objects.delete(file2)
       foo.reload
+      # This line is failing because related_objects.each.count 
+      # is 0 after deleting one of the two items. 
+      #
+      # Fedora also shows the inconsistency. Before the delete
+      #
+      #    </foo> ore:aggregates </file1>, </file2> .
+      #
+      # After the delete </foo> does not have ore:aggregates at all.
+      # 
+      require 'byebug'; byebug
       expect(foo.related_objects.each.count).to eq(1)
     end
   end
