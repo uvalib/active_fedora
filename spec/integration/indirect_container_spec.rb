@@ -247,5 +247,51 @@ describe "Indirect containers" do
         end
       end
     end
+
+    context "when object is added multiple times" do
+      before do
+        class FooHistory < ActiveFedora::Base
+          indirectly_contains :related_objects,
+              has_member_relation: ::RDF::URI.new('http://www.openarchives.org/ore/terms/aggregates'),
+              inserted_content_relation: ::RDF::URI.new('http://www.openarchives.org/ore/terms/proxyFor'),
+              class_name: "ActiveFedora::Base",
+              through: 'Proxy', foreign_key: :proxy_for
+        end
+
+        parent_foo.related_objects << child_foo1
+        parent_foo.related_objects << child_foo2
+        parent_foo.related_objects << child_foo1
+      end
+      after do
+        Object.send(:remove_const, :FooHistory)
+      end
+
+      let(:parent_foo) { FooHistory.create }
+      let(:child_foo1) { FooHistory.create }
+      let(:child_foo2) { FooHistory.create }
+
+      it "should replace the object in the set when in memory" do
+        related_objects = parent_foo.related_objects.to_a
+        expect( related_objects.include? child_foo1 ).to be true
+        expect( related_objects.include? child_foo2 ).to be true
+        expect( related_objects.size ).to eq 2
+      end
+
+      it "should replace the object in the set when saved" do
+        parent_foo.save
+        related_objects = parent_foo.related_objects.to_a
+        expect( related_objects.include? child_foo1 ).to be true
+        expect( related_objects.include? child_foo2 ).to be true
+        expect( related_objects.size ).to eq 2
+      end
+
+      it "should replace the object in the set when saved and reloaded" do
+        parent_foo.save
+        related_objects = parent_foo.reload.related_objects.to_a
+        expect( related_objects.include? child_foo1 ).to be true
+        expect( related_objects.include? child_foo2 ).to be true
+        expect( related_objects.size ).to eq 2
+      end
+    end
   end
 end
