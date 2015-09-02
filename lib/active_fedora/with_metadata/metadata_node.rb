@@ -2,6 +2,7 @@ module ActiveFedora
   module WithMetadata
     class MetadataNode < ActiveTriples::Resource
       include ActiveModel::Dirty
+      property :mime_type, predicate: ::RDF::URI("http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasMimeType")
       attr_reader :file
 
       def initialize(file)
@@ -43,6 +44,7 @@ module ActiveFedora
         raise "Save the file first" if file.new_record?
         SparqlInsert.new(changes_for_update, ::RDF::URI.new(file.uri)).execute(metadata_uri)
         @ldp_source = nil
+        clear_changes_information
         true
       end
 

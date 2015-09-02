@@ -174,6 +174,25 @@ describe ActiveFedora::File do
     end
   end
 
+  describe "#mime_type" do
+    let(:parent) { ActiveFedora::Base.create }
+    before do
+      parent.add_file('banana', path: 'apple', mime_type: 'video/webm')
+      parent.save!
+    end
+    it "should persist" do
+      expect(parent.reload.apple.mime_type).to eq "video/webm"
+    end
+    it "should be able to be updated" do
+      parent.reload
+      parent.apple.mime_type = "text/plain"
+      expect(parent.apple.mime_type).to eq "text/plain"
+      parent.save
+
+      expect(parent.reload.apple.mime_type).to eq "text/plain"
+    end
+  end
+
   context "original_name" do
     subject { file.original_name }
 

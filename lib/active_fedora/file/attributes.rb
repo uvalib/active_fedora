@@ -1,9 +1,11 @@
 module ActiveFedora::File::Attributes
 
-  attr_writer :mime_type
-
   def mime_type
     @mime_type ||= fetch_mime_type
+  end
+
+  def mime_type=(value)
+    metadata.mime_type = value
   end
 
   def original_name
@@ -53,7 +55,7 @@ module ActiveFedora::File::Attributes
 
     def fetch_mime_type
       return default_mime_type if new_record?
-      ldp_source.head.headers['Content-Type']
+      metadata.mime_type.first
     end
 
     def fetch_original_name

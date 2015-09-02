@@ -63,6 +63,14 @@ module ActiveFedora
         comparison_object.uri == uri
     end
 
+    def save
+      super.tap do |result|
+        if metadata.changed?
+          metadata.save
+        end
+      end
+    end
+
     def ldp_source
       @ldp_source || raise("NO source")
     end
@@ -136,8 +144,12 @@ module ActiveFedora
       local_or_remote_content(false) != @ds_content
     end
 
+    def metadata_changed?
+      metadata.changed?
+    end
+
     def changed?
-      super || content_changed?
+      super || content_changed? || metadata_changed?
     end
 
     def inspect
