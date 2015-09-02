@@ -46,7 +46,6 @@ module ActiveFedora
         raise "Save the file first" if file.new_record?
         SparqlInsert.new(changes_for_update, ::RDF::URI.new(file.uri)).execute(metadata_uri)
         @ldp_source = nil
-        clear_changes_information
         true
       end
 
