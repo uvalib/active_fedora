@@ -185,11 +185,11 @@ describe ActiveFedora::File do
     end
     it "should be able to be updated" do
       parent.reload
-      parent.apple.mime_type = "text/plain"
-      expect(parent.apple.mime_type).to eq "text/plain"
+      parent.apple.mime_type = "text/awesome"
+      expect(parent.apple.mime_type).to eq "text/awesome"
       parent.save
 
-      expect(parent.reload.apple.mime_type).to eq "text/plain"
+      expect(parent.reload.apple.mime_type).to eq "text/awesome"
     end
   end
 

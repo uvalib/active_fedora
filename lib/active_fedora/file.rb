@@ -125,6 +125,7 @@ module ActiveFedora
     def attribute_will_change!(attr)
       if attr == 'content'
         changed_attributes['content'] = true
+      elsif attr == 'type'
       else
         super
       end
@@ -144,12 +145,16 @@ module ActiveFedora
       local_or_remote_content(false) != @ds_content
     end
 
-    def metadata_changed?
-      metadata.changed?
-    end
-
     def changed?
       super || content_changed? || metadata_changed?
+    end
+
+    def metadata_changed?
+      if new_record? || links['describedBy'].blank?
+        false
+      else
+        metadata.changed?
+      end
     end
 
     def inspect

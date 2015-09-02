@@ -1,7 +1,7 @@
 module ActiveFedora::File::Attributes
 
   def mime_type
-    @mime_type ||= fetch_mime_type
+    fetch_mime_type
   end
 
   def mime_type=(value)
@@ -54,7 +54,7 @@ module ActiveFedora::File::Attributes
     end
 
     def fetch_mime_type
-      return default_mime_type if new_record?
+      return default_mime_type if new_record? && metadata.mime_type.blank?
       metadata.mime_type.first
     end
 

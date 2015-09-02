@@ -29,7 +29,9 @@ module ActiveFedora
 
       def set_value(*args)
         super
-        attribute_will_change! args.first
+        if args.first.to_sym != :type
+          attribute_will_change! args.first
+        end
       end
 
       def ldp_source
