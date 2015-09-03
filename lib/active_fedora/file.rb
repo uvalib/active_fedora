@@ -150,7 +150,7 @@ module ActiveFedora
     end
 
     def metadata_changed?
-      if new_record? || links['describedBy'].blank?
+      if new_record? || links['describedby'].blank?
         false
       else
         metadata.changed?

@@ -29,9 +29,7 @@ module ActiveFedora
 
       def set_value(*args)
         super
-        if args.first.to_sym != :type
-          attribute_will_change! args.first
-        end
+        attribute_will_change! args.first
       end
 
       def ldp_source
@@ -51,7 +49,7 @@ module ActiveFedora
 
       def changed_attributes
         super.tap do |changed|
-          if type.present?
+          if type.present? && new_record?
             changed['type'] = true
           end
         end

@@ -28,7 +28,7 @@ module ActiveFedora::File::Attributes
   end
 
   def dirty_size
-    content.size if changed? && content.respond_to?(:size)
+    content.size if content_changed? && content.respond_to?(:size)
   end
 
   def size
