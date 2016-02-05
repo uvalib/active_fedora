@@ -88,12 +88,14 @@ module ActiveFedora
         def save_through_record(record)
           build_proxy_node({}) do |node|
             node[options[:foreign_key]] = record
+            node.root_container = "/#{container.id}"
+            node.slug = container.mint_id
             node.save
           end
         end
 
         def build_proxy_node(attributes, &block)
-          proxy_class.new({ id: container.mint_id }.merge(attributes), &block)
+          proxy_class.new(attributes, &block)
         end
 
         def proxy_class

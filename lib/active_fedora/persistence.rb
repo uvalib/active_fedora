@@ -181,7 +181,7 @@ module ActiveFedora
         @ldp_source = if !id && new_id = assign_id
                         LdpResource.new(ActiveFedora.fedora.connection, self.class.id_to_uri(new_id), @resource)
                       else
-                        LdpResource.new(ActiveFedora.fedora.connection, @ldp_source.subject, @resource, ActiveFedora.fedora.host + base_path_for_resource)
+                        LdpResource.new(ActiveFedora.fedora.connection, @ldp_source.subject, @resource, ActiveFedora.fedora.host + base_path_for_resource + root_container.to_s)
                       end
       end
 

@@ -41,6 +41,9 @@ describe "Indirect containers" do
     context "when it is not loaded" do
       context "and it contains the file" do
         subject { foo.reload.related_objects.include? file1 }
+        it "bla" do
+          expect(subject).to eq true
+        end
         it { is_expected.to be true }
       end
 
