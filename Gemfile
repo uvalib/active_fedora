@@ -7,8 +7,9 @@ gemspec path: File.expand_path('..', __FILE__)
 gem 'byebug' unless ENV['TRAVIS']
 gem 'pry-byebug' unless ENV['CI']
 
-gem 'active-triples', github: "ActiveTriples/ActiveTriples", branch: 'develop'
+gem 'active-triples', github: "ActiveTriples/ActiveTriples", branch: 'delegate_size'
 gem 'activemodel', ENV['RAILS_VERSION'] if ENV['RAILS_VERSION']
+gem 'rsolr', github: 'tpendragon/rsolr', branch: 'xml_array_like_object'
 
 group :test do
   gem 'simplecov', require: false
