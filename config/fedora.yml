@@ -6,8 +6,8 @@ development:
 test:
   user: fedoraAdmin
   password: fedoraAdmin
-  url: http://localhost:8984/rest
-  base_path: /test
+  url: http://localhost:4567
+  base_path: <%= "/test#{SecureRandom.hex}" %>
 production:
   user: fedoraAdmin
   password: fedoraAdmin

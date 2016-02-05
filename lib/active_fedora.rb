@@ -52,6 +52,7 @@ module ActiveFedora #:nodoc:
     autoload :ChangeSet
     autoload :Checksum
     autoload :CleanConnection
+    autoload :EverythingContainerConnection
     autoload :Config
     autoload :Core
     autoload_under 'containers' do

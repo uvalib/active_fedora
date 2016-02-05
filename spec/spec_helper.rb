@@ -21,11 +21,11 @@ require 'pry' unless ENV['TRAVIS']
 
 ActiveFedora::Base.logger = Logger.new(STDERR)
 ActiveFedora::Base.logger.level = Logger::WARN
-# require 'http_logger'
-# HttpLogger.logger = Logger.new(STDOUT)
-# HttpLogger.ignore = [/localhost:8983\/solr/]
-# HttpLogger.colorize = false
-# HttpLogger.log_headers = true
+require 'http_logger'
+HttpLogger.logger = Logger.new(STDOUT)
+HttpLogger.ignore = [/localhost:8983\/solr/]
+HttpLogger.colorize = false
+HttpLogger.log_headers = true
 
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |f| require f }
 require 'samples/samples'
@@ -42,16 +42,22 @@ restore_spec_configuration
 # Shut those Rails deprecation warnings up
 ActiveSupport::Deprecation.behavior = proc { |_message, _callstack| }
 
-require 'active_fedora/cleaner'
+# require 'active_fedora/cleaner'
+# RSpec.configure do |config|
+#   # Stub out test stuff.
+#   config.before(:each) do
+#     ActiveFedora::Cleaner.clean!
+#   end
+#   config.after(:each) do
+#     # cleanout_fedora
+#   end
+#   config.order = :random if ENV['CI']
+# end
 RSpec.configure do |config|
-  # Stub out test stuff.
   config.before(:each) do
-    ActiveFedora::Cleaner.clean!
+    ActiveFedora.solr.conn.delete_by_query("*:*")
+    ActiveFedora.solr.conn.commit
   end
-  config.after(:each) do
-    # cleanout_fedora
-  end
-  config.order = :random if ENV['CI']
 end
 
 def fixture(file)

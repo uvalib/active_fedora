@@ -5,7 +5,7 @@ development:
     url: http://localhost:8983/solr/development
 test:
   default:
-    url: http://localhost:8983/solr/hydra-test
+    url: http://localhost:8983/solr/test
   full_text:
     url: http://localhost:8983/solr/test
 production:

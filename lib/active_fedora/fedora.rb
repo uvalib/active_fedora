@@ -26,7 +26,7 @@ module ActiveFedora
       # things like ldp:IndirectContainers, but it's imposes a significant
       # performance penalty on every request
       #   @connection ||= InboundRelationConnection.new(CachingConnection.new(authorized_connection))
-      @connection ||= CachingConnection.new(authorized_connection)
+      @connection ||= EverythingContainerConnection.new(CachingConnection.new(authorized_connection))
     end
 
     def clean_connection
