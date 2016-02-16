@@ -5,6 +5,7 @@ def with_test_server(&block)
 end
 
 def with_server(environment, fcrepo_port: nil, solr_port: nil)
+  return unless ensure_dependencies
   return yield if ENV["#{environment}_SERVER_STARTED"]
 
   ENV["#{environment}_SERVER_STARTED"] = 'true'
@@ -31,3 +32,26 @@ def with_server(environment, fcrepo_port: nil, solr_port: nil)
   end
   ENV["#{environment}_SERVER_STARTED"] = 'false'
 end
+
+private
+
+  # We have a soft dependency on solr_wrapper and fcrepo_wrapper, that is they are not
+  # required for the production operation of ActiveFedora, only for development and test.
+  # This method ensures the dependencies are met.
+  def ensure_dependencies
+    begin
+      require 'solr_wrapper'
+    rescue LoadError
+      $stderr.puts "Unable to load `solr_wrapper' so Solr can't be started"
+      return
+    end
+
+    begin
+      require 'fcrepo_wrapper'
+    rescue LoadError
+      $stderr.puts "Unable to load `fcrepo_wrapper' so Solr can't be started"
+      return
+    end
+
+    true
+  end
