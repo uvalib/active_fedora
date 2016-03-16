@@ -1,10 +1,8 @@
 require 'active_model/forbidden_attributes_protection'
-require 'deprecation'
+
 module ActiveFedora
   module Attributes
     extend ActiveSupport::Concern
-    extend Deprecation
-    self.deprecation_horizon = 'ActiveFedora 10.0'
     include ActiveModel::Dirty
     include ActiveModel::ForbiddenAttributesProtection
 
@@ -136,11 +134,6 @@ module ActiveFedora
           outgoing_reflections.values.map { |reflection| reflection.foreign_key.to_s }
         end
 
-        def defined_attributes
-          Deprecation.warn Attributes, "defined_attributes has been renamed to delegated_attributes. defined_attributes will be removed in ActiveFedora 9"
-          delegated_attributes
-        end
-
         def delegated_attributes
           @delegated_attributes ||= {}.with_indifferent_access
           return @delegated_attributes unless superclass.respond_to?(:delegated_attributes) && value = superclass.delegated_attributes
@@ -150,15 +143,6 @@ module ActiveFedora
 
         def delegated_attributes=(val)
           @delegated_attributes = val
-        end
-
-        def has_attributes(*fields, &block)
-          options = fields.pop
-          delegate_target = options.delete(:datastream)
-          raise ArgumentError, "You must provide a datastream to has_attributes" if delegate_target.blank?
-          Deprecation.warn(Attributes, "has_attributes is deprecated and will be removed in ActiveFedora 10.0. Instead use:\n  property #{fields.first.inspect}, delegate_to: '#{delegate_target}', ...")
-
-          define_delegated_accessor(fields, delegate_target, options, &block)
         end
 
         # Reveal if the attribute has been declared unique

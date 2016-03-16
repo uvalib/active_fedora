@@ -13,44 +13,6 @@ module ActiveFedora
       end
     end
 
-    def self.find_graph_predicate(predicate)
-      Deprecation.warn("find_graph_predicate has been deprecated and will be removed in ActiveFedora 10.0")
-      # TODO, these could be cached
-      case predicate
-      when :has_model, "hasModel", :hasModel
-        xmlns = "http://fedora.info/definitions/v4/model#"
-        begin
-          rel_predicate = predicate_lookup(predicate, xmlns)
-        rescue UnregisteredPredicateError
-          xmlns = nil
-          rel_predicate = nil
-        end
-      else
-        xmlns = "info:fedora/fedora-system:def/relations-external#"
-        begin
-          rel_predicate = predicate_lookup(predicate, xmlns)
-        rescue UnregisteredPredicateError
-          xmlns = nil
-          rel_predicate = nil
-        end
-      end
-
-      unless xmlns && rel_predicate
-        rel_predicate, xmlns = find_predicate(predicate)
-      end
-
-      vocabularies[xmlns][rel_predicate]
-    end
-
-    def self.vocabularies(vocabs = {})
-      Deprecation.warn("vocabularies has been deprecated and will be removed in ActiveFedora 10.0")
-      @vocabularies ||= vocabs
-      predicate_mappings.keys.each do |ns|
-        @vocabularies[ns] = ::RDF::Vocabulary.new(ns) unless @vocabularies.key? ns
-      end
-      @vocabularies
-    end
-
     # If predicate is a symbol, looks up the predicate in the predicate_mappings
     # If predicate is not a Symbol, returns the predicate untouched
     # @raise UnregisteredPredicateError if the predicate is a symbol but is not found in the predicate_mappings
@@ -74,11 +36,6 @@ module ActiveFedora
 
     def self.predicate_config
       @@predicate_config ||= ActiveFedora.predicate_config
-    end
-
-    def self.predicate_namespaces
-      Deprecation.warn("predicate_namespaces has been deprecated and will be removed in ActiveFedora 10.0")
-      predicate_config[:predicate_namespaces] ||= {}
     end
 
     def self.predicate_mappings

@@ -1,12 +1,9 @@
-require 'deprecation'
-
 module ActiveFedora
   # An LDP NonRDFSource. The base class for a bytestream stored in the repository.
   class File
     extend ActiveModel::Callbacks
     extend ActiveSupport::Autoload
     extend ActiveTriples::Properties
-    extend Deprecation
     extend Querying
 
     autoload :Streaming
@@ -41,15 +38,6 @@ module ActiveFedora
         when String, ::RDF::URI
           id = ActiveFedora::Associations::IDComposite.new([parent_or_url_or_hash], translate_uri_to_id).first
           @ldp_source = build_ldp_resource id
-        when ActiveFedora::Base
-          Deprecation.warn File, "Initializing a file by passing a container is deprecated. Initialize with a uri instead. This capability will be removed in active-fedora 10.0"
-          uri = if parent_or_url_or_hash.uri.is_a?(::RDF::URI) && parent_or_url_or_hash.uri.value.empty?
-                  nil
-                else
-                  "#{parent_or_url_or_hash.uri}/#{path}"
-                end
-          @ldp_source = build_ldp_resource_via_uri(uri, nil)
-
         else
           raise "The first argument to #{self} must be a String or an ActiveFedora::Base. You provided a #{parent_or_url_or_hash.class}"
         end

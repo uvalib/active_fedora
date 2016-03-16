@@ -25,26 +25,6 @@ describe ActiveFedora::AttachedFiles do
       end
     end
   end
-  describe "serializing datastreams" do
-    before do
-      class TestingMetadataSerializing < ActiveFedora::Base
-        has_metadata "nokogiri_autocreate_on", autocreate: true, type: ActiveFedora::OmDatastream
-        has_metadata "nokogiri_autocreate_off", autocreate: false, type: ActiveFedora::OmDatastream
-      end
-    end
-
-    after do
-      Object.send(:remove_const, :TestingMetadataSerializing)
-    end
-
-    subject { TestingMetadataSerializing.new }
-
-    it "works" do
-      subject.save(validate: false)
-      expect(subject.nokogiri_autocreate_on).to_not be_new_record
-      expect(subject.nokogiri_autocreate_off).to be_new_record
-    end
-  end
 
   describe "#has_file_datastream" do
     before do

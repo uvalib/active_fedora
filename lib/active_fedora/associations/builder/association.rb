@@ -20,19 +20,12 @@ module ActiveFedora::Associations::Builder
       @model = model
       @name = name
       @options = options
-      translate_property_to_predicate
       validate_options
     end
 
     def build
       configure_dependency if options[:dependent] # see https://github.com/rails/rails/commit/9da52a5e55cc665a539afb45783f84d9f3607282
       model.create_reflection(self.class.macro, name, options, model)
-    end
-
-    def translate_property_to_predicate
-      return unless options[:property]
-      Deprecation.warn Association, "the :property option to `#{model}.#{macro} :#{name}' is deprecated and will be removed in active-fedora 10.0. Use :predicate instead", caller(5)
-      options[:predicate] = predicate(options.delete(:property))
     end
 
     def validate_options

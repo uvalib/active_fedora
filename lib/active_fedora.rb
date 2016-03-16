@@ -56,7 +56,6 @@ module ActiveFedora #:nodoc:
       autoload :DirectContainer
       autoload :IndirectContainer
     end
-    autoload :Datastream
     autoload :Datastreams
     autoload :DelegatedAttribute
     autoload_under 'attributes' do
@@ -84,7 +83,6 @@ module ActiveFedora #:nodoc:
     autoload :LdpResource
     autoload :LdpResourceService
     autoload :LoadableFromJson
-    autoload :Model
     autoload :ModelClassifier
     autoload :NestedAttributes
     autoload :NomDatastream

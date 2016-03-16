@@ -8,19 +8,6 @@ module ActiveFedora
   # fedora. If you want to represent a fedora object in the ruby
   # space, this is the class you want to extend.
   #
-  # =The Basics
-  #   class Oralhistory < ActiveFedora::Base
-  #     has_metadata "properties", type: ActiveFedora::SimpleDatastream do |m|
-  #       m.field "narrator",  :string
-  #       m.field "narrator",  :text
-  #     end
-  #   end
-  #
-  # The above example creates a Fedora object with a metadata datastream named "properties", which is composed of a
-  # narrator and bio field.
-  #
-  # Attached files defined with +contains+ are accessed via the +attached_files+ member hash.
-  #
   class Base
     extend ActiveModel::Naming
     extend ActiveSupport::DescendantsTracker
