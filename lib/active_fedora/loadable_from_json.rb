@@ -50,6 +50,10 @@ module ActiveFedora
         @hash[k]
       end
 
+      def persist!(*args)
+        true
+      end
+
       # FakeQuery exists to adapt the hash to the RDF interface used by RDF associations in ActiveFedora
       class FakeQuery
         include ::Enumerable
