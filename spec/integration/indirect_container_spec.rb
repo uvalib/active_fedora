@@ -249,6 +249,41 @@ describe "Indirect containers" do
       end
     end
 
+    context "when using memberOf as the member relation" do
+      before do
+        class Different < ActiveFedora::Base
+          property :title, predicate: ::RDF::Vocab::DC.title, multiple: false
+        end
+        class FooHistory < ActiveFedora::Base
+          indirectly_contains :member_of_collections,
+                              has_member_relation: ::RDF::URI.new('http://pcdm.org/models#memberOf'),
+                              inserted_content_relation: ::RDF::URI.new('http://www.openarchives.org/ore/terms/proxyFor'),
+                              class_name: 'Different',
+                              through: 'ActiveFedora::Aggregation::Proxy',
+                              foreign_key: :target
+        end
+      end
+      after do
+        Object.send(:remove_const, :FooHistory)
+        Object.send(:remove_const, :Different)
+      end
+
+      let(:member) { FooHistory.create }
+      let(:parent) { Different.create }
+
+      describe "remove" do
+        it "is able to remove" do
+          member.member_of_collections = [parent]
+          member.save!
+          expect(member.reload.member_of_collections).to eq [parent]
+
+          member.member_of_collections = []
+          member.save!
+          expect(member.reload.member_of_collections).to eq []
+        end
+      end
+    end
+
     context "when using is_member_of_relation" do # , skip: "As far as I can tell, FC4 doesn't support IndirectContainer with isMemberOfRelation" do
       before do
         class FooHistory < ActiveFedora::Base
