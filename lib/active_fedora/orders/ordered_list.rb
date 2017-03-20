@@ -21,6 +21,7 @@ module ActiveFedora
         @head_subject = head_subject
         @tail_subject = tail_subject
         @node_cache ||= NodeCache.new
+        prepopulate_cache
         @changed = false
         tail
       end
@@ -182,6 +183,15 @@ module ActiveFedora
       private
 
         attr_reader :node_cache
+
+        def prepopulate_cache
+          graph.subjects.each do |subject|
+            result = build_node(subject)
+            node_cache.fetch(::RDF::URI("##{subject.to_s.split("#").last}")) do
+              result
+            end
+          end
+        end
 
         def append_to(source, append_node)
           source.prev = append_node

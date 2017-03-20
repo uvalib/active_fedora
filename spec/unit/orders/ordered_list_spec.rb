@@ -40,6 +40,19 @@ RSpec.describe ActiveFedora::Orders::OrderedList do
     end
   end
 
+  describe "node caching" do
+    context "when given an existing graph" do
+      it "caches the node IDs that already existed" do
+        node_subject = RDF::URI.new("parent#bla")
+        member_uri = RDF::URI.new(ActiveFedora::Base.translate_id_to_uri.call("member1"))
+        parent_uri = RDF::URI.new("parent")
+        graph << [node_subject, RDF::Vocab::ORE.proxyFor, member_uri]
+        graph << [node_subject, RDF::Vocab::ORE.proxyIn, parent_uri]
+
+        expect(ordered_list.send(:node_cache).key?(RDF::URI("#bla"))).to eq true
+      end
+    end
+  end
   describe "#target_ids" do
     context "from a graph" do
       let(:head_uri) { RDF::URI.new("parent#bla") }
