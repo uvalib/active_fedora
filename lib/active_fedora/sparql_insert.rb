@@ -30,7 +30,7 @@ module ActiveFedora
     private
 
       def pattern_subject(potential_subject)
-        if MaybeHashUri.new(potential_subject).hash?
+        if MaybeChildUri.new(potential_subject).child?
           potential_subject
         else
           subject
@@ -66,14 +66,34 @@ module ActiveFedora
       end
   end
 
-  class MaybeHashUri
+  class MaybeChildUri
+    ##
+    # @!attribute [r] uri
+    #   @return [#to_s]
     attr_reader :uri
+
+    ##
+    # @param uri [#to_s]
     def initialize(uri)
       @uri = uri
     end
 
+    ##
+    # @return [Boolean]
+    def child?
+      hash? || skolem?
+    end
+
+    ##
+    # @return [Boolean]
     def hash?
       uri.to_s.include?("#")
+    end
+
+    ##
+    # @return [Boolean]
+    def skolem?
+      uri.to_s.include?(".well-known/genid")
     end
   end
 end
