@@ -11,5 +11,8 @@ module ActiveFedora::WithMetadata
     property :byte_order, predicate: SweetJPLTerms.byteOrder
     # This is a server-managed predicate which means Fedora does not let us change it.
     property :file_hash, predicate: ::RDF::Vocab::PREMIS.hasMessageDigest
+    # For external files NOT specified using message/external-body
+    property :external_file_uri, predicate: "http://opaquenamespace.org/ns/external_file_uri"
+    property :external_file_service, predicate: "http://opaquenamespace.org/ns/external_file_service"
   end
 end

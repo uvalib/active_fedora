@@ -37,7 +37,7 @@ RSpec/MessageChain:
 
 # Offense count: 241
 RSpec/MultipleExpectations:
-  Max: 8
+  Max: 10
 
 # Offense count: 181
 # Configuration parameters: Max.

@@ -23,6 +23,8 @@ describe ActiveFedora::WithMetadata::DefaultMetadataClassFactory do
                                                 to: :metadata_node)
       expect(parent).to receive(:delegate).with(:byte_order, :byte_order=, :byte_order_changed?, to: :metadata_node)
       expect(parent).to receive(:delegate).with(:file_hash, :file_hash=, :file_hash_changed?, to: :metadata_node)
+      expect(parent).to receive(:delegate).with(:external_file_uri, :external_file_uri=, :external_file_uri_changed?, to: :metadata_node)
+      expect(parent).to receive(:delegate).with(:external_file_service, :external_file_service=, :external_file_service_changed?, to: :metadata_node)
       object.class.build(parent)
     end
   end

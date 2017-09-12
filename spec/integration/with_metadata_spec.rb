@@ -47,6 +47,8 @@ describe ActiveFedora::WithMetadata do
       it { is_expected.to respond_to(:date_modified) }
       it { is_expected.to respond_to(:byte_order) }
       it { is_expected.to respond_to(:file_hash) }
+      it { is_expected.to respond_to(:external_file_uri) }
+      it { is_expected.to respond_to(:external_file_service) }
     end
   end
 
