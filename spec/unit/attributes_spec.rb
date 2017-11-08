@@ -131,6 +131,8 @@ describe ActiveFedora::Base do
         expect { history.title = "Quack" }.to raise_error ArgumentError
         expect { history.title = ["Quack"] }.not_to raise_error
         expect { history.title = nil }.not_to raise_error
+        expect { history.title = [] }.not_to raise_error
+        expect { history.title = '' }.to raise_error ArgumentError
         expect { history.title = ActiveTriples::Resource.new }.to raise_error
       end
 
@@ -139,6 +141,8 @@ describe ActiveFedora::Base do
         expect { history.abstract = ["Low"] }
           .to raise_error ArgumentError, "You attempted to set the property `abstract' of test:123 to an enumerable value. However, this property is declared as singular."
         expect { history.abstract = nil }.not_to raise_error
+        expect { history.abstract = '' }.not_to raise_error
+        expect { history.abstract = [] }.to raise_error
         expect { history.abstract = ActiveTriples::Resource.new }.not_to raise_error
       end
     end
